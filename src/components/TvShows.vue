@@ -62,17 +62,12 @@
         </span>
       </div>
     </div>
-    <div v-if="showItem.length > 0">
-      <TvDetails :showItem="showItem" name="Neelesh" />
-    </div>
   </div>
 </template>
 
 <script>
-import TvDetails from "./TvDetails.vue";
 export default {
   name: "TvShows",
-  components: { TvDetails },
   data() {
     return {
       message: "My first VueJS Task",
