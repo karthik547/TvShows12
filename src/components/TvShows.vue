@@ -63,7 +63,7 @@
       </div>
     </div>
     <div v-if="showItem.length > 0">
-      <TvDetails :showItem="showItem" name="Neelesh" :tvShows="tvShows" />
+      <TvDetails :showItem="showItem" name="Neelesh" />
     </div>
   </div>
 </template>
@@ -79,7 +79,9 @@ export default {
       searchInput: "",
       tvShows: [],
       showItem: "",
-      showDetails: {},
+      showDetails: "",
+      name: "",
+      details: ""
     };
   },
   computed: {
@@ -105,9 +107,11 @@ export default {
       let tvShow = allTvShows.filter((show) => show.id === itemId);
       tvShow.forEach((item) => {
         self.showItem = item.id;
-        self.showDetails = item.summary;
+        self.showDetails = item.image.medium;
+        self.name = item.name
+        self.details = item.summary
       });
-      this.$router.push({ name: "TvDetails", params: { id: self.showItem } });
+      this.$router.push({ name: "TvDetails", params: { id: self.showItem, obj: self.showDetails, name: self.name, details: self.details } });
     },
   },
 };
