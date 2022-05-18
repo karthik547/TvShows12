@@ -24,13 +24,15 @@
     <div class="tvShowsActionData">
       <h2>Action</h2>
       <div class="listOfShows">
-        <span v-for="item in filterByTerm" :key="item.id">
-          <span v-for="diff in item.genres" :key="diff">
-            <span v-if="diff === 'Action'">
-              <span class="card">
+        <div v-for="item in filterByTerm" :key="item.id">
+          <div v-for="diff in item.genres" :key="diff">
+            <div v-if="diff === 'Action'">
+              <div class="card">
                 <img
                   @click="openDetailsPage(item.id)"
                   :src="item.image.medium"
+                  height="140"
+                  width="170"
                 />
                 <div class="container">
                   <h4>
@@ -38,28 +40,33 @@
                   </h4>
                   <p>{{ item.rating.average }}</p>
                 </div>
-              </span>
-            </span>
-          </span>
-        </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <h2>Adventure</h2>
       <div class="listOfShows">
-        <span v-for="item in filterByTerm" :key="item.id">
-          <span v-for="diff in item.genres" :key="diff">
-            <span v-if="diff === 'Adventure'">
-              <span class="card">
-                <img :src="item.image.medium" />
+        <div v-for="item in filterByTerm" :key="item.id">
+          <div v-for="diff in item.genres" :key="diff">
+            <div v-if="diff === 'Adventure'">
+              <div class="card">
+                <img
+                  @click="openDetailsPage(item.id)"
+                  :src="item.image.medium"
+                  height="140"
+                  width="170"
+                />
                 <div class="container">
                   <h4>
                     <b>{{ item.name }}</b>
                   </h4>
                   <p>{{ item.rating.average }}</p>
                 </div>
-              </span>
-            </span>
-          </span>
-        </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -76,7 +83,7 @@ export default {
       showItem: "",
       showDetails: "",
       name: "",
-      details: ""
+      details: "",
     };
   },
   computed: {
@@ -91,7 +98,9 @@ export default {
       .then((response) => response.json())
       .then((data) => {
         console.log(data, "data..");
-        data.sort((a, b) => Number(b.rating.average) - Number(a.rating.average));
+        data.sort(
+          (a, b) => Number(b.rating.average) - Number(a.rating.average)
+        );
         this.tvShows = data;
       });
   },
@@ -103,10 +112,18 @@ export default {
       tvShow.forEach((item) => {
         self.showItem = item.id;
         self.showDetails = item.image.medium;
-        self.name = item.name
-        self.details = item.summary
+        self.name = item.name;
+        self.details = item.summary;
       });
-      this.$router.push({ name: "TvDetails", params: { id: self.showItem, obj: self.showDetails, name: self.name, details: self.details } });
+      this.$router.push({
+        name: "TvDetails",
+        params: {
+          id: self.showItem,
+          obj: self.showDetails,
+          name: self.name,
+          details: self.details,
+        },
+      });
     },
   },
 };
@@ -126,7 +143,7 @@ export default {
   margin-left: 20px;
 }
 .tvShowsActionData {
-  margin-left: 30px;
+  margin-left: 50px;
 }
 .listOfShows {
   margin-left: 20px;
@@ -136,7 +153,7 @@ export default {
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
-  width: 30%;
+  width: 170px;
 }
 .card:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
