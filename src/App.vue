@@ -6,11 +6,8 @@
 //import TvShows from './components/TvShows.vue'
 
 export default {
-  name: 'App',
-  
-}
+  name: "App",
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

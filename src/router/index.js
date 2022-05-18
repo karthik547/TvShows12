@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import TvDetails from '../components/TvDetails';
 import TvShows from '../components/TvShows';
+import TvMaze from '../components/TvMaze';
 
 const routes = [
     {
@@ -12,6 +13,11 @@ const routes = [
         path:'/shows/:id',
         name:'TvDetails',
         component: TvDetails
+    },
+    {
+        path:'/tvMaze',
+        name:'TvMaze',
+        component: TvMaze
     }
 ]
 

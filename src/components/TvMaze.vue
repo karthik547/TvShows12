@@ -80,8 +80,9 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  name: "TvShows",
+  name: "TvMaze",
   data() {
     return {
       message: "My first VueJS Task",
@@ -97,20 +98,21 @@ export default {
   computed: {
     filterByTerm() {
       return this.tvShows.filter((item) => {
-        return item.name.toLowerCase().includes(this.searchInput);
+        return item.name;
       });
     },
   },
-  created() {
-    fetch("https://api.tvmaze.com/shows")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data, "data..");
-        data.sort(
-          (a, b) => Number(b.rating.average) - Number(a.rating.average)
-        );
-        this.tvShows = data;
-      });
+  async created() {
+    try {
+      const response = await axios.get("https://api.tvmaze.com/shows");
+      this.tvShows = response.data;
+      this.tvShows.sort(
+        (a, b) => Number(b.rating.average) - Number(a.rating.average)
+      );
+      console.log(this.tvShows, "Helloworld..page..data");
+    } catch (err) {
+      this.error = err;
+    }
   },
   methods: {
     openDetailsPage(itemId) {
