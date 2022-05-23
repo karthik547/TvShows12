@@ -1,74 +1,64 @@
 import { shallowMount } from "@vue/test-utils";
 import flushPromises from "flush-promises";
-import { mount } from '@vue/test-utils'
-import {jest} from '@jest/globals';
-import TvMaze from "@/components/TvMaze";
+import { jest } from "@jest/globals";
+import TvShows from "@/components/TvShows";
+
+jest.mock("axios", () => ({
+  get: () => Promise.resolve({ data: [{ val: 1 }] }),
+}));
 
 describe("TvMaze.vue Implementation Test", () => {
+  //api call
+  test("mocking the axios call to get TvShows should work", async () => {
+    var wrapper = shallowMount(TvShows);
+    await flushPromises();
+    expect(wrapper.vm.tvShows.length).toBe(1);
+  });
 
   let wrapper = null;
-  // check the name of the component
-  //expect(wrapper.vm.$options.name).toMatch('TvMaze');
 
-  //Setup - run before to each unit test
-  beforeEach(()=>{
-    //render the component
-    wrapper = shallowMount(TvMaze,{
-      data:{
-        message: "",
-        searchInput: "",
-        tvShows: [],
-        showItem: "",
-        showDetails: "",
-        name: "",
-        details: "",
-        searchBar: false,
-      }
-    })
-  })
+  it("has tvShowHeading class", () => {
+    expect(wrapper.contains(".tvShowHeading")).toBe(true);
+  });
 
-  // TEARDOWN - run after to each unit test
-  afterEach(()=>{
-    wrapper.destroy();
-  })
+  it("has heading values", () => {
+    expect(wrapper.find("span").text()).toBe("TV SHOWS");
+    expect(wrapper.find("span").text()).toBe("TV SHOWS");
+    expect(wrapper.find("span").text()).toBe("TV SHOWS");
+  });
 
-  //Data check
-  it('initializes with correct elements',()=>{
-    //check span is rendered
-    expect(wrapper.findAll('span').text()).toMatch('TV SHOWS')
-    //check h2 is rendered
-    expect(wrapper.findAll('h2').text()).toMatch('Action')
-    expect(wrapper.findAll('h2').text()).toMatch('Adventure')
+  //check the data properties of the component
+  let cmp;
 
-  })
+  beforeEach(() => {
+    cmp = shallowMount(TvShows, {
+      // Create a shallow instance of the component
+      data: {
+        tvShows: [{ name: "Stargate SG-1" }],
+        showItem: 204,
+        name: "Stargate SG-1",
+        details: "stargate is action film",
+      },
+    });
+  });
 
-  it('processes valid data',()=>{
-    // Update the data passed to render component
-
-  })
-
-  jest.mock("axios", () => ({
-    get: () => Promise.resolve({ data: [{ id: 1 }] })
-  }));
-
-  //api call
-  it("mocking the axios call to get data should work", async () => {
-    var wrapper = shallowMount(TvMaze);
-    await flushPromises();
-    expect(wrapper.vm.tvMaze).toBe(JSON.stringify())
+  it("equals messages to", () => {
+    // Within cmp.vm, we can access all Vue instance methods
+    expect(cmp.vm.tvShows).toEqual([{ name: "Stargate SG-1" }]);
+    expect(cmp.vm.showItem).toEqual(204);
+    expect(cmp.vm.details).toEqual("stargate is action film");
+    expect(cmp.vm.name).toEqual("Stargate SG-1");
   });
 
   //Image details click function
-  it('calls image details when the image is clicked', async () => {
-    const wrapper = mount(TvMaze)
-    const imageC = wrapper.find('img').trigger('click')
-    expect(imageC)
-  })
+  it("calls image details when the image is clicked", async () => {
+    const wrapper = shallowMount(TvShows);
+    const imageC = wrapper.find("img").trigger("click");
+    expect(imageC);
+  });
+
+  // TEARDOWN - run after to each unit test
+  afterEach(() => {
+    wrapper.destroy();
+  });
 });
-
-
-
-
-
-
-
