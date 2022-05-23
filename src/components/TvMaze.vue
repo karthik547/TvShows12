@@ -5,7 +5,7 @@
         src="../assets/youtube.png"
         width="50"
         height="30"
-        style="padding-left: 5px; padding-top: 10px"
+        style="padding-left: 5px; padding-top: 10px; cursor: pointer"
       />
       <span>TV SHOWS</span>
       <input
@@ -15,6 +15,7 @@
         placeholder="Search..."
         style="margin-left: 450px; position: absolute; margin-top: 15px"
         v-show="searchBar"
+        data-searchInput
       />
       <img
         src="../assets/search.jpg"
@@ -32,26 +33,25 @@
     <div class="tvShowsActionData">
       <h2>Action</h2>
       <div class="listOfShows">
-        <div v-for="item in filterByTerm" :key="item.id">
-          <div v-for="diff in item.genres" :key="diff">
-            <div v-if="diff === 'Action'">
-              <div class="card">
-                <img
-                  @click="openDetailsPage(item.id)"
-                  :src="item.image.medium"
-                  height="130"
-                  width="170"
-                />
-                <div class="container">
-                  <h4 style="padding-top: 7px">
-                    <b>{{ item.name }}</b>
-                  </h4>
-                  <p>
-                    {{ item.rating.average }}
-                    <i style="color: red" class="fa-solid fa-star"></i>
-                  </p>
-                </div>
-              </div>
+        {{ filterByAction }}
+        <div v-for="item in filterByAction" :key="item">
+          <div class="card">
+            <img
+              class="mySlides"
+              @click="openDetailsPage(item.id)"
+              :src="item.image.medium"
+              height="130"
+              width="170"
+              style="cursor: pointer"
+            />
+            <div class="container">
+              <h4 style="padding-top: 7px">
+                <b>{{ item.name }}</b>
+              </h4>
+              <p>
+                {{ item.rating.average }}
+                <i style="color: red" class="fa-solid fa-star"></i>
+              </p>
             </div>
           </div>
         </div>
@@ -61,40 +61,38 @@
           id="Prev"
           class="fa fa-chevron-left fa-1x"
           aria-hidden="true"
-          @click="side_slide(-1)"
+          @click="nextSlide"
           style="cursor: pointer"
         ></i>
         <i
           id="Next"
           class="fa fa-chevron-right fa-1x"
           aria-hidden="true"
-          @click="side_slide(1)"
+          @click="prevSlide"
+          style="cursor: pointer"
         ></i>
       </div>
     </div>
     <div class="tvShowsAdventureData">
       <h2>Adventure</h2>
       <div class="listOfShows">
-        <div v-for="item in filterByTerm" :key="item.id">
-          <div v-for="diff in item.genres" :key="diff">
-            <div v-if="diff === 'Adventure'">
-              <div class="card">
-                <img
-                  @click="openDetailsPage(item.id)"
-                  :src="item.image.medium"
-                  height="140"
-                  width="170"
-                />
-                <div class="container">
-                  <h4 style="padding-top: 7px">
-                    <b>{{ item.name }}</b>
-                  </h4>
-                  <p>
-                    {{ item.rating.average
-                    }}<i style="color: red" class="fa-solid fa-star"></i>
-                  </p>
-                </div>
-              </div>
+        <div v-for="item in filterByAction" :key="item.id">
+          <div class="card">
+            <img
+              @click="openDetailsPage(item.id)"
+              :src="item.image.medium"
+              height="140"
+              width="170"
+              style="cursor: pointer"
+            />
+            <div class="container">
+              <h4 style="padding-top: 7px">
+                <b>{{ item.name }}</b>
+              </h4>
+              <p>
+                {{ item.rating.average
+                }}<i style="color: red" class="fa-solid fa-star"></i>
+              </p>
             </div>
           </div>
         </div>
@@ -120,7 +118,6 @@ export default {
       showDetails: "",
       name: "",
       details: "",
-      slideIndex: 1,
       searchBar: false,
     };
   },
@@ -131,6 +128,24 @@ export default {
           item.name.toLowerCase().includes(this.searchInput) ||
           item.name.toUpperCase().includes(this.searchInput)
         );
+      });
+    },
+    filterByAction() {
+      return this.tvShows.filter((item) => {
+        item.genres.filter((aItem) => {
+          if (aItem === "Action") {
+            return item;
+          }
+        });
+      });
+    },
+    filterByAdventure() {
+      return this.tvShows.filter((item) => {
+        item.genres.filter((aItem) => {
+          if (aItem === "Adventure") {
+            return item;
+          }
+        });
       });
     },
   },
@@ -168,21 +183,8 @@ export default {
       });
     },
     openSearchField() {
+      console.log(this.filterByAction, "filterByAction...");
       this.searchBar = !this.searchBar;
-    },
-    side_slide(n) {
-      let i;
-      let slides = document.getElementsById("#Next");
-      if (n > slides.length) {
-        this.slideIndex = 1;
-      }
-      if (n < 1) {
-        this.slideIndex = slides.length;
-      }
-      for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-      }
-      slides[this.slideIndex - 1].style.display = "block";
     },
   },
 };
@@ -278,5 +280,8 @@ export default {
 #Arrows i:hover {
   background-color: rgba(28, 29, 33, 0.75);
   color: #eeeff7;
+}
+.mySlides {
+  display: none;
 }
 </style>
