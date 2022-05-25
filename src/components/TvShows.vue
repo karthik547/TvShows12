@@ -13,6 +13,7 @@
         v-model="searchInput"
         placeholder="Search..."
         style="float: right; padding-top: 5px; padding-right: 10px"
+        data-test="tvShow-input"
       />
       <img
         src="../assets/search.jpg"
@@ -29,7 +30,7 @@
     <div class="tvShowsActionData">
       <h2>Action</h2>
       <div class="listOfShows">
-        <div v-for="item in filterByTerm" :key="item.id">
+        <div v-for="item in tvShows" :key="item.id">
           <div v-for="diff in item.genres" :key="diff">
             <div v-if="diff === 'Action'">
               <div class="card">
@@ -39,7 +40,7 @@
                   height="140"
                   width="170"
                 />
-                <div class="container">
+                <div class="container" data-test="tvShow-names">
                   <h4>
                     <b>{{ item.name }}</b>
                   </h4>
@@ -54,7 +55,7 @@
       <a class="next" onclick="plusSlides(1)">❯</a>
       <h2>Adventure</h2>
       <div class="listOfShows">
-        <div v-for="item in filterByTerm" :key="item.id">
+        <div v-for="item in tvShows" :key="item.id">
           <div v-for="diff in item.genres" :key="diff">
             <div v-if="diff === 'Adventure'">
               <div class="card">
@@ -85,14 +86,12 @@ export default {
   name: "TvShows",
   data() {
     return {
-      message: "My first VueJS Task",
       searchInput: "",
       tvShows: [],
       showItem: "",
       showDetails: "",
       name: "",
       details: "",
-      slideIndex: 1,
     };
   },
   computed: {
@@ -108,11 +107,10 @@ export default {
   async created() {
     try {
       const response = await axios.get("https://api.tvmaze.com/shows");
-      this.tvShows = response.data;
-      this.tvShows.sort(
+      this.tvShows = response.data.sort(
         (a, b) => Number(b.rating.average) - Number(a.rating.average)
       );
-      console.log(this.tvShows, "tvShows..page..data");
+      console.log(this.tvShows, "this.tvShows...");
     } catch (err) {
       this.error = err;
     }

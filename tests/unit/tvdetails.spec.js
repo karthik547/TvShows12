@@ -1,23 +1,40 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import tvDetails from "@/components/tvDetails";
+import { shallowMount } from "@vue/test-utils";
+import TvDetails from "@/components/TvDetails";
 
-describe("tvDetails.vue", () => {
-  it("should totest renders stuff", (done) => {
-    Vue.use(VueRouter);
-    const router = new VueRouter({
-      routes: [{ path: "/shows/:id", name: "tvDetails", component: tvDetails }],
+// const $route = {
+//   path: "/tvDetails",
+//   hash: "",
+//   params: { id: "123" },
+// };
+
+// mount(TvDetails, {
+//   mocks: {
+//     $route,
+//   },
+// });
+
+let wrapper = null;
+
+describe("MyComponent", () => {
+  beforeEach(() => {
+    wrapper = shallowMount(TvDetails, {
+      mocks: {
+        $route: {
+          params: {
+            id: "id",
+            details: "details",
+            obj: "obj",
+            name: "name",
+          },
+        },
+      },
     });
-    const vm = new Vue({
-      el: document.createElement("div"),
-      router: router,
-      render: (h) => h("router-view"),
-    });
-    router.push({ name: "tvDetails", params: { id: 204 } });
-    Vue.nextTick(() => {
-      console.log("html:", vm.$el);
-      expect(vm.$el.querySelector("h2").textContent).to.equal("Stargate SG-1");
-      done();
-    });
+  });
+
+  it("$route has passed params", () => {
+    expect(wrapper.vm.$route.params.id).toMatch("id");
+    expect(wrapper.vm.$route.params.details).toMatch("details");
+    expect(wrapper.vm.$route.params.obj).toMatch("obj");
+    expect(wrapper.vm.$route.params.name).toMatch("name");
   });
 });

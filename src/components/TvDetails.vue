@@ -3,7 +3,7 @@
     Details {{ userId }}
     <div>
       <h2>{{ name }}</h2>
-      <img :src="tvShows" />
+      <img :src="obj" />
       <p>{{ details }}</p>
     </div>
   </div>
@@ -16,7 +16,7 @@ export default {
     return {
       details: this.$route.params.details,
       userId: this.$route.params.id,
-      tvShows: this.$route.params.obj,
+      obj: this.$route.params.obj,
       name: this.$route.params.name,
     };
   },
