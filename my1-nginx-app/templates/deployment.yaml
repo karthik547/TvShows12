@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "my-nginx-app.fullname" . }}
+  name: {{ include "my1-nginx-app.fullname" . }}
   labels:
-    {{ include "my-nginx-app.labels" . | nindent 4 }}
+    {{ include "my1-nginx-app.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{ include "my-nginx-app.selectorLabels" . | nindent 6 }}
+      {{ include "my1-nginx-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,14 +18,14 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{ include "my-nginx-app.selectorLabels" . | nindent 8 }}
+        {{ include "my1-nginx-app.selectorLabels" . | nindent 8 }}
         spiffe.io/spire-workload: "nginx-workload" # ✅ Custom label for SPIRE
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "my-nginx-app.serviceAccountName" . }}
+      serviceAccountName: {{ include "my1-nginx-app.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
