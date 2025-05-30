@@ -7,6 +7,7 @@
     </transition-group>
     <a class="prev" @click="prev" href="#">&#10094; Previous</a>
     <a class="next" @click="next" href="#">&#10095; Next</a>
+    <a class="next" @click="next" href="#">&#10095; Next</a>
   </div>
 </template>
 
